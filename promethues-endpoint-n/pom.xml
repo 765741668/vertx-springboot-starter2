@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.yl.container</groupId>
+        <artifactId>springboot-starter-yl-vertx-container</artifactId>
+        <version>0.0.2</version>
+    </parent>
+    <artifactId>promethues-endpoint-n</artifactId>
+    <name>promethues-endpoint-n</name>
+    <packaging>jar</packaging>
+    <description>Demo project for Spring Boot with</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-buffer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.hystrix</groupId>
+            <artifactId>hystrix-rx-netty-metrics-stream</artifactId>
+            <version>1.5.18</version>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.rxnetty</groupId>
+            <artifactId>rx-netty</artifactId>
+            <version>0.3.18</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.ahus1.prometheus.hystrix</groupId>
+            <artifactId>prometheus-hystrix</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!--<mainClass>org.springframework.boot.loader.PropertiesLauncher</mainClass>-->
+                    <!--使用layout=NONE简单的打包有嵌套依赖的jar(没有主类，所以无法执行)-->
+                    <!--MODULE: 将所有的依赖库打包（scope为provided的除外），但是不打包Spring Boot的任何Launcher-->
+                    <layout>NONE</layout>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

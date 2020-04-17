@@ -2,17 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.2.2.RELEASE</version>
-    <relativePath/> <!-- lookup parent from repository -->
-  </parent>
-  <groupId>com.orochi</groupId>
-  <artifactId>vertx</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <groupId>com.yl.container</groupId>
+  <artifactId>springboot-starter-yl-vertx-container</artifactId>
+  <version>0.0.2</version>
   <packaging>pom</packaging>
-  <name>vertx</name>
+  <name>springboot-starter-yl-vertx-container</name>
   <description>Demo project for Spring Boot</description>
 
   <properties>
@@ -20,27 +14,31 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <spring-boot.version>2.0.1.RELEASE</spring-boot.version>
+    <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
     <vertx.version>3.8.3</vertx.version>
-    <mybatis-plus-boot-starter.version>3.0-RC1</mybatis-plus-boot-starter.version>
-    <HikariCP.version>3.2.0</HikariCP.version>
-    <fastjson.version>1.2.39</fastjson.version>
     <org.reflections.version>0.9.11</org.reflections.version>
-    <tk.mybatis.mapper.version>4.0.2</tk.mybatis.mapper.version>
-    <mysql-connector-java.version>5.1.47</mysql-connector-java.version>
-    <mybatis-spring.version>1.3.0</mybatis-spring.version>
   </properties>
 
   <modules>
-    <module>vertx-core</module>
-    <module>vertx-service</module>
+    <module>vertx-server</module>
+    <module>promethues-endpoint-v</module>
+    <module>promethues-endpoint-n</module>
   </modules>
 
   <dependencyManagement>
     <dependencies>
+<!--      <dependency>-->
+<!--        <groupId>io.vertx</groupId>-->
+<!--        <artifactId>vertx-dependencies</artifactId>-->
+<!--        <version>${vertx.version}</version>-->
+<!--        <type>pom</type>-->
+<!--        <scope>import</scope>-->
+<!--      </dependency>-->
       <dependency>
-        <groupId>io.vertx</groupId>
-        <artifactId>vertx-dependencies</artifactId>
-        <version>${vertx.version}</version>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -48,25 +46,6 @@
   </dependencyManagement>
 
   <dependencies>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-service-proxy</artifactId>
-      <classifier>processor</classifier>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-codegen</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <!--<dependency>-->
-      <!--<groupId>com.fasterxml.jackson.core</groupId>-->
-      <!--<artifactId>jackson-databind</artifactId>-->
-      <!--<version>2.8.10</version>-->
-    <!--</dependency>-->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -76,30 +55,82 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>1.2.3</version>
-    </dependency>
-    <dependency>
-      <groupId>com.zaxxer</groupId>
-      <artifactId>HikariCP</artifactId>
-      <version>${HikariCP.version}</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>slf4j-api</artifactId>
+          <groupId>org.slf4j</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>${commons-lang3.version}</version>
+      <version>3.9</version>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-webmvc</artifactId>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.16.20</version>
     </dependency>
   </dependencies>
 
-  <!--<build>-->
-    <!--<plugins>-->
-      <!--<plugin>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
-      <!--</plugin>-->
-    <!--</plugins>-->
-  <!--</build>-->
+  <distributionManagement>
+    <repository>
+      <id>releases</id>
+      <name>Releases</name>
+      <url>http://192.168.1.211:8082/nexus/content/repositories/releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>snapshots</id>
+      <name>Snapshots</name>
+      <url>http://192.168.1.211:8082/nexus/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <profiles>
+    <profile>
+      <id>snapshots</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <id>snapshots</id>
+          <name>Snapshots</name>
+          <url>http://192.168.1.211:8082/nexus/content/repositories/snapshots</url>
+        </repository>
+      </repositories>
+    </profile>
+    <profile>
+      <id>alphas</id>
+      <repositories>
+        <repository>
+          <id>Alpha</id>
+          <name>Alpha</name>
+          <url>http://192.168.1.211:8082/nexus/content/repositories/Alpha</url>
+        </repository>
+      </repositories>
+    </profile>
+    <profile>
+      <id>betas</id>
+      <repositories>
+        <repository>
+          <id>Beta</id>
+          <name>Beta</name>
+          <url>http://192.168.1.211:8082/nexus/content/repositories/Beta</url>
+        </repository>
+      </repositories>
+    </profile>
+    <profile>
+      <id>releases</id>
+      <repositories>
+        <repository>
+          <id>releases</id>
+          <name>Releases</name>
+          <url>http://192.168.1.211:8082/nexus/content/repositories/releases</url>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
 
 </project>
