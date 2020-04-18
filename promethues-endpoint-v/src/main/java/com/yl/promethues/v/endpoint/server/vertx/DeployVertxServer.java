@@ -43,6 +43,7 @@ public class DeployVertxServer {
         log.debug("Start Deploy....");
         log.debug("Start registry router....");
         VertxSingleton.getInstance().deployVerticle(new RouterRegistryVerticle(router, port));
+        log.info("采集引擎启动成功: {}", port);
     }
 
     public static void startDeploy(Router router, String asyncServiceImplPackages, int port, int asyncServiceInstances) throws IOException {

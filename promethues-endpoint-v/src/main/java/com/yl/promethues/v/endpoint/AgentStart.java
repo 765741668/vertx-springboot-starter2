@@ -12,8 +12,8 @@ import com.yl.promethues.v.endpoint.listener.VertxEngine;
  */
 public class AgentStart {
 
-        public static void premain(String enable) {
-            new VertxEngine().startEngine();
+        public static void premain(String port) {
+            new VertxEngine().startEngine(port);
         }
 
 }
