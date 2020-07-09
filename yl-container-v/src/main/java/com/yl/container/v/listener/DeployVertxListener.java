@@ -16,28 +16,41 @@ import java.io.IOException;
 import java.util.ServiceLoader;
 
 @Component
-@ConditionalOnProperty(value = "promethues.hystrix-metrics.dump-engine.enable", havingValue = "true")
+@ConditionalOnProperty(value = "vertxEngine.enable", havingValue = "true")
 @Slf4j
 public class DeployVertxListener {
-    /**
-     * controller api所在包路径
-     */
-    @Value("${promethues-endpoint.api-packages:com.yl.promethues.v.endpoint.controller}")
-    private String webApiPackages;
 
     /**
      * http服务器端口号
      */
-    @Value("${promethues-endpoint.port:15555}")
+    @Value("${vertx.httpServerPort:6666}")
     private int httpServerPort;
+
+    /**
+     * controller api所在包路径
+     */
+    @Value("${vertx.controller-api-packages}")
+    private String webApiPackages;
+
+    /**
+     * 异步服务所在包路径
+     */
+    @Value("${vertx.async-service-impl-packages}")
+    private String asyncServiceImplPackages;
 
     /**
      * 工作线程池大小（可根据实际情况调整）
      */
-    @Value("${promethues-endpoint.worker-pool-size:20}")
+    @Value("${vertx.worker-pool-size:20}")
     private int workerPoolSize;
 
-    @Value("${event-bus-connect-timeout:10000}")
+    /**
+     * 异步服务实例数量（建议和CPU核数相同）
+     */
+    @Value("${vertx.async-service-instances:1}")
+    private int asyncServiceInstances;
+
+    @Value("${vertx.event-bus-connect-timeout:10000}")
     private int eventBusOptionsConnectTimeout;
 
     @EventListener
@@ -53,9 +66,9 @@ public class DeployVertxListener {
         //启动引擎
         try {
             Router router = new RouterHandlerFactory(webApiPackages).createRouter();
-            DeployVertxServer.startDeploy(router, httpServerPort);
+            DeployVertxServer.startDeploy(router, asyncServiceImplPackages, httpServerPort, asyncServiceInstances);
         } catch (IOException e) {
-            log.error("Promethues采集器启动失败：{}", e.getMessage(), e);
+            log.error("Vertx引擎启动失败：{}", e.getMessage(), e);
         }
 
     }

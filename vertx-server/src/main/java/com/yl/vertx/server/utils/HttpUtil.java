@@ -43,7 +43,4 @@ public class HttpUtil {
         routingContext.response().putHeader("content-type", "text/html; charset=utf-8").end(text);
     }
 
-
-
-
 }

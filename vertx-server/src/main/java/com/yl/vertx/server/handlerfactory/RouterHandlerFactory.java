@@ -85,7 +85,7 @@ public class RouterHandlerFactory {
     public Router createRouter() {
         Router router = RouterSingleton.getInstance();
         router.route().handler(ctx -> {
-//            log.debug("The HTTP service request address information ===>path:{}, uri:{}, method:{}",
+//            log.info("The HTTP service request address information ===>path:{}, uri:{}, method:{}",
 //                    ctx.request().path(), ctx.request().absoluteURI(), ctx.request().method());
             ctx.response().headers().add(CONTENT_TYPE, "application/json; charset=utf-8");
             ctx.response().headers().add(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
@@ -173,7 +173,7 @@ public class RouterHandlerFactory {
                     url = root.concat(routeUrl);
                 }
                 Handler<RoutingContext> methodHandler = (Handler<RoutingContext>) method.invoke(instance);
-                log.debug("Register New Handler -> {}:{}", routeMethod, url);
+                log.info("Register New Handler -> {}:{}", routeMethod, url);
                 switch (routeMethod) {
                     case POST:
                         router.post(url).handler(methodHandler);

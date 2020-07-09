@@ -40,16 +40,16 @@ import java.io.IOException;
 public class DeployVertxServer {
 
     public static void startDeploy(Router router,  int port) throws IOException {
-        log.debug("Start Deploy....");
-        log.debug("Start registry router....");
+        log.info("Start Deploy....");
+        log.info("Start registry router....");
         VertxSingleton.getInstance().deployVerticle(new RouterRegistryVerticle(router, port));
     }
 
     public static void startDeploy(Router router, String asyncServiceImplPackages, int port, int asyncServiceInstances) throws IOException {
-        log.debug("Start Deploy....");
-        log.debug("Start registry router....");
+        log.info("Start Deploy....");
+        log.info("Start registry router....");
         VertxSingleton.getInstance().deployVerticle(new RouterRegistryVerticle(router, port));
-        log.debug("Start registry service....");
+        log.info("Start registry service....");
         if (asyncServiceInstances < 1) {
             asyncServiceInstances = 1;
         }
@@ -59,10 +59,10 @@ public class DeployVertxServer {
     }
 
     public static void startDeploy(Router router, String asyncServiceImplPackages, int asyncServiceInstances) throws IOException {
-        log.debug("Start Deploy....");
-        log.debug("Start registry router....");
+        log.info("Start Deploy....");
+        log.info("Start registry router....");
         VertxSingleton.getInstance().deployVerticle(new RouterRegistryVerticle(router));
-        log.debug("Start registry service....");
+        log.info("Start registry service....");
         if (asyncServiceInstances < 1) {
             asyncServiceInstances = 1;
         }

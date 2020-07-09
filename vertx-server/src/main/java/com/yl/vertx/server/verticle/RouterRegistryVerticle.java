@@ -61,7 +61,7 @@ public class RouterRegistryVerticle extends AbstractVerticle {
 
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
-        log.debug("To start listening to port {} ......", port);
+        log.info("To start listening to port {} ......", port);
         super.start();
         HttpServerOptions options = new HttpServerOptions().setMaxWebsocketFrameSize(MAX_WEBSOCKET_FRAME_SIZE).setPort(port);
         server = vertx.createHttpServer(options);
@@ -69,7 +69,7 @@ public class RouterRegistryVerticle extends AbstractVerticle {
         server.listen(result -> {
             if (result.succeeded()) {
                 startPromise.complete();
-                log.debug("RouterRegistry started on port {}",port);
+                log.info("RouterRegistry started on port {}",port);
             } else {
                 startPromise.fail(result.cause());
             }

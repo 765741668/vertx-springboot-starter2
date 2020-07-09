@@ -32,37 +32,24 @@ import io.vertx.core.json.Json;
 */
 public class ResponsePacket<T> {
 
-    private int code = 200;//状态
+    //状态码
+    private Integer code;
 
-    private String msg = "SUCCESS";//消息
+    //返回信息
+    private String msg;
 
+    //返回数据
     private T data;
 
-    public T getData() {
-        return data;
-    }
-
-    public ResponsePacket setData(T data) {
-        this.data = data;
-        return this;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public ResponsePacket setCode(int code) {
+    private ResponsePacket(Integer code, String msg) {
         this.code = code;
-        return this;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public ResponsePacket setMsg(String msg) {
         this.msg = msg;
-        return this;
+    }
+
+    private ResponsePacket(Integer code, String msg, T data) {
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
     }
 
     @Override
@@ -70,7 +57,4 @@ public class ResponsePacket<T> {
         return Json.encode(this);
     }
 
-    public static ResponsePacket build() {
-        return new ResponsePacket();
-    }
 }
