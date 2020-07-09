@@ -1,9 +1,7 @@
-package com.yl.vertx.server.utils;
+package com.yl.vertx.server.engine;
 
-import com.yl.vertx.server.model.ResponsePacket;
-import io.vertx.core.http.HttpServerResponse;
-import io.vertx.ext.web.RoutingContext;
 
+import com.yl.vertx.server.enums.EngineType;
 
 /**
  * ////////////////////////////////////////////////////////////////////
@@ -28,22 +26,17 @@ import io.vertx.ext.web.RoutingContext;
  * //      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  * //         佛祖保佑       永无BUG     永不修改
  * ////////////////////////////////////////////////////////////////////
- *@Description: 
+ *@Description:
  *
- *@author  Orochi-Yzh
- *@dateTime  15/4/2020 15:15
-*/
-public class HttpUtil {
+ * @date 2020/4/16 15:34
+ * @Author: <a href= "765741668@qq.com">yangzonghua</a>
+ */
+public interface CollectEngine {
 
-    public static void fireJsonResponse(HttpServerResponse response, int statusCode, ResponsePacket responsePacket) {
-        response.putHeader("content-type", "application/json; charset=utf-8").setStatusCode(statusCode).end(responsePacket.toString());
-    }
-
-    public static void fireTextResponse(RoutingContext routingContext, String text) {
-        routingContext.response().putHeader("content-type", "text/html; charset=utf-8").end(text);
-    }
-
-
+    /**
+     * 选择引擎
+     */
+    EngineInitializer<String, Integer> useEngine(EngineType engineType);
 
 
 }

@@ -15,7 +15,20 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <vertx.version>3.8.3</vertx.version>
+        <org.reflections.version>0.9.11</org.reflections.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-dependencies</artifactId>
+                <version>${vertx.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -45,45 +58,89 @@
             <artifactId>spring-webmvc</artifactId>
             <version>5.0.5.RELEASE</version>
         </dependency>
-        <dependency>
-            <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient_common</artifactId>
-            <version>0.0.20</version>
-        </dependency>
     </dependencies>
 
-    <build>
-        <finalName>vertx-server-0.0.2</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <!-- 指定该Main Class为全局的唯一入口 -->
-                    <mainClass>com.yl.vertx.server.App</mainClass>
-<!--                    <layout>ZIP</layout>-->
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal><!--可以把依赖的包都打包到生成的Jar包中-->
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-            <resource>
-                <directory>src/main/resources/lib</directory>
-                <targetPath>BOOT-INF/lib/</targetPath>
-                <includes>
-                    <include>**/*.jar</include>
-                </includes>
-            </resource>
-        </resources>
-    </build>
+    <!--    <build>-->
+    <!--        <finalName>vertx-server-0.0.2</finalName>-->
+    <!--        <plugins>-->
+    <!--            <plugin>-->
+    <!--                <groupId>org.springframework.boot</groupId>-->
+    <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+    <!--                <configuration>-->
+    <!--                    &lt;!&ndash; 指定该Main Class为全局的唯一入口 &ndash;&gt;-->
+    <!--                    <mainClass>com.yl.vertx.server.App</mainClass>-->
+    <!--&lt;!&ndash;                    <layout>ZIP</layout>&ndash;&gt;-->
+    <!--                </configuration>-->
+    <!--                <executions>-->
+    <!--                    <execution>-->
+    <!--                        <goals>-->
+    <!--                            <goal>repackage</goal>&lt;!&ndash;可以把依赖的包都打包到生成的Jar包中&ndash;&gt;-->
+    <!--                        </goals>-->
+    <!--                    </execution>-->
+    <!--                </executions>-->
+    <!--            </plugin>-->
+    <!--        </plugins>-->
+    <!--        <resources>-->
+    <!--            <resource>-->
+    <!--                <directory>src/main/resources</directory>-->
+    <!--            </resource>-->
+    <!--            <resource>-->
+    <!--                <directory>src/main/resources/lib</directory>-->
+    <!--                <targetPath>BOOT-INF/lib/</targetPath>-->
+    <!--                <includes>-->
+    <!--                    <include>**/*.jar</include>-->
+    <!--                </includes>-->
+    <!--            </resource>-->
+    <!--        </resources>-->
+    <!--    </build>-->
 
+    <profiles>
+        <profile>
+            <id>snapshots</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>snapshots</id>
+                    <name>Snapshots</name>
+                    <url>http://192.168.1.211:8082/nexus/content/repositories/snapshots</url>
+                </repository>
+            </repositories>
+        </profile>
+
+        <profile>
+            <id>alphas</id>
+            <repositories>
+                <repository>
+                    <id>Alpha</id>
+                    <name>Alpha</name>
+                    <url>http://192.168.1.211:8082/nexus/content/repositories/Alpha</url>
+                </repository>
+            </repositories>
+        </profile>
+
+        <profile>
+            <id>betas</id>
+            <repositories>
+                <repository>
+                    <id>Beta</id>
+                    <name>Beta</name>
+                    <url>http://192.168.1.211:8082/nexus/content/repositories/Beta</url>
+                </repository>
+            </repositories>
+        </profile>
+
+        <profile>
+            <id>releases</id>
+            <repositories>
+                <repository>
+                    <id>releases</id>
+                    <name>Releases</name>
+                    <url>http://192.168.1.211:8082/nexus/content/repositories/releases</url>
+                </repository>
+            </repositories>
+        </profile>
+
+    </profiles>
 </project>
